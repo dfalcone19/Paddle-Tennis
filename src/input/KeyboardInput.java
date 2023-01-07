@@ -8,8 +8,6 @@ import main.GamePanel;
 
 public class KeyboardInput implements KeyListener {
 	private GamePanel panel;
-	Paddle user;
-	Paddle comp;
 	
 	public KeyboardInput(GamePanel panel) {
 		this.panel = panel;
@@ -24,12 +22,20 @@ public class KeyboardInput implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_W:
-			panel.getPaddle().setYDir(-16);
-			panel.getPaddle().move();
+			panel.getUser().setYDir(-10);
+			panel.getUser().move();
 			break;
 		case KeyEvent.VK_S:
-			panel.getPaddle().setYDir(16);
-			panel.getPaddle().move();
+			panel.getUser().setYDir(10);
+			panel.getUser().move();
+			break;
+		case KeyEvent.VK_UP:
+			panel.getComp().setYDir(-10);
+			panel.getComp().move();
+			break;
+		case KeyEvent.VK_DOWN:
+			panel.getComp().setYDir(10);
+			panel.getComp().move();
 			break;
 		}
 	}
@@ -38,12 +44,20 @@ public class KeyboardInput implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_W:
-			panel.getPaddle().setYDir(0);
-			panel.getPaddle().move();
+			panel.getUser().setYDir(0);
+			panel.getUser().move();
 			break;
 		case KeyEvent.VK_S:
-			panel.getPaddle().setYDir(0);
-			panel.getPaddle().move();
+			panel.getUser().setYDir(0);
+			panel.getUser().move();
+			break;
+		case KeyEvent.VK_UP:
+			panel.getComp().setYDir(0);
+			panel.getComp().move();
+			break;
+		case KeyEvent.VK_DOWN:
+			panel.getComp().setYDir(0);
+			panel.getComp().move();
 			break;
 		}
 	}

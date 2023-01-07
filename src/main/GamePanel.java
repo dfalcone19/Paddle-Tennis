@@ -61,7 +61,8 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void move() {
-
+		user.move();
+		comp.move();
 	}
 
 	public void detectCollision() {
@@ -71,6 +72,14 @@ public class GamePanel extends JPanel implements Runnable {
 		
 		if (user.y >= (GAME_HEIGHT - PADDLE_HEIGHT)) {
 			user.y = GAME_HEIGHT - PADDLE_HEIGHT;
+		}
+		
+		if (comp.y <= 0) {
+			comp.y = 0;
+		}
+		
+		if (comp.y >= (GAME_HEIGHT - PADDLE_HEIGHT)) {
+			comp.y = GAME_HEIGHT - PADDLE_HEIGHT;
 		}
 	}
 
@@ -105,8 +114,11 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 	}
 	
-	public Paddle getPaddle() {
+	public Paddle getUser() {
 		return user;
+	}
+	public Paddle getComp() {
+		return comp;
 	}
 
 }
