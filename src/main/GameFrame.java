@@ -16,5 +16,6 @@ public class GameFrame extends JFrame {
 		this.pack();
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);
+		this.setBackground(new Color(108,147,92));
 	}
 }

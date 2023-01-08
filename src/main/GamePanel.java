@@ -40,44 +40,90 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void createBall() {
-
+//		rand = new Random();
+		ball = new Ball((GAME_WIDTH / 2) - (BALL_DIAMETER / 2), (GAME_HEIGHT / 2) - (BALL_DIAMETER / 2), BALL_DIAMETER,
+				BALL_DIAMETER);
 	}
 
 	public void createPaddle() {
 		user = new Paddle(0, (GAME_HEIGHT / 2) - (PADDLE_HEIGHT / 2), PADDLE_WIDTH, PADDLE_HEIGHT, 1);
-		comp = new Paddle(GAME_WIDTH - PADDLE_WIDTH, (GAME_HEIGHT / 2) - (PADDLE_HEIGHT / 2), PADDLE_WIDTH, PADDLE_HEIGHT, 2);
+		comp = new Paddle(GAME_WIDTH - PADDLE_WIDTH, (GAME_HEIGHT / 2) - (PADDLE_HEIGHT / 2), PADDLE_WIDTH,
+				PADDLE_HEIGHT, 2);
 	}
 
 	public void paint(Graphics g) {
 		image = createImage(getWidth(), getHeight());
 		graphics = image.getGraphics();
 		draw(graphics);
-		g.drawImage(image, 0, 0, this); 
+		g.drawImage(image, 0, 0, this);
 	}
 
 	public void draw(Graphics g) {
 		user.draw(g);
 		comp.draw(g);
+		ball.draw(g);
 	}
 
 	public void move() {
 		user.move();
 		comp.move();
+		ball.move();
 	}
 
 	public void detectCollision() {
+
+		// bounce ball of top and bottom of window
+		if (ball.y <= 0) {
+			ball.setYDir(-ball.getyVelocity());
+		}
+
+		if (ball.y >= GAME_HEIGHT - BALL_DIAMETER) {
+			ball.setYDir(-ball.getyVelocity());
+		}
+
+		// bounces ball of user paddle
+		if (ball.intersects(user)) {
+			ball.setxVelocity(Math.abs(ball.getxVelocity()));
+			ball.setxVelocity(ball.getxVelocity() + 1);
+
+			if (ball.getyVelocity() > 0) {
+				ball.setyVelocity(ball.getyVelocity() + 1);
+			} else {
+				ball.setyVelocity(ball.getyVelocity() - 1);
+			}
+			
+			ball.setXDir(ball.getxVelocity());
+			ball.setYDir(ball.getyVelocity());
+		}
+		
+		// bounces ball of computer paddle
+		if (ball.intersects(comp)) {
+			ball.setxVelocity(Math.abs(ball.getxVelocity()));
+			ball.setxVelocity(ball.getxVelocity() + 1);
+
+			if (ball.getyVelocity() > 0) {
+				ball.setyVelocity(ball.getyVelocity() + 1);
+			} else {
+				ball.setyVelocity(ball.getyVelocity() - 1);
+			}
+			
+			ball.setXDir(-ball.getxVelocity());
+			ball.setYDir(ball.getyVelocity());
+		}
+
+		// stops paddles at top and bottom of window
 		if (user.y <= 0) {
 			user.y = 0;
 		}
-		
+
 		if (user.y >= (GAME_HEIGHT - PADDLE_HEIGHT)) {
 			user.y = GAME_HEIGHT - PADDLE_HEIGHT;
 		}
-		
+
 		if (comp.y <= 0) {
 			comp.y = 0;
 		}
-		
+
 		if (comp.y >= (GAME_HEIGHT - PADDLE_HEIGHT)) {
 			comp.y = GAME_HEIGHT - PADDLE_HEIGHT;
 		}
@@ -113,10 +159,11 @@ public class GamePanel extends JPanel implements Runnable {
 
 		}
 	}
-	
+
 	public Paddle getUser() {
 		return user;
 	}
+
 	public Paddle getComp() {
 		return comp;
 	}

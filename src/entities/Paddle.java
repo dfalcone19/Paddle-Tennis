@@ -23,9 +23,9 @@ public class Paddle extends Rectangle {
 
 	public void draw(Graphics g) {
 		if (playerNum == 1) {
-			g.setColor(Color.BLUE);
+			g.setColor(Color.WHITE);
 		} else {
-			g.setColor(Color.MAGENTA);
+			g.setColor(Color.WHITE);
 		}
 		
 		g.fillRect(x, y, width, height);
