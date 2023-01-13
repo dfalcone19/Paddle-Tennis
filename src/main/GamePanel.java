@@ -4,21 +4,36 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.Random;
-
 import javax.swing.JPanel;
 
 import entities.Ball;
 import entities.Paddle;
 import input.KeyboardInput;
 
+/**
+ * Class to define the JPanel and run the majority of the code
+ * 
+ * @author Daniel Falcone
+ *
+ */
 public class GamePanel extends JPanel implements Runnable {
+	/** Integer to define width of the panel */
 	private static final int GAME_WIDTH = 1000;
+	/** Integer to define the height of the panel 
+	 * 0.5555 is the ratio of the width to length of a standard ping pong table (5/9) 
+	 * */
 	private static final int GAME_HEIGHT = (int) (GAME_WIDTH * 0.5555);
+	/** Dimension variable to store the dimensions of the JPanel */
 	private static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH, GAME_HEIGHT);
+	/** Integer to store the diameter of the ball*/
 	private static final int BALL_DIAMETER = 20;
+	/** Integers to store the width of the paddles */
 	private static final int PADDLE_WIDTH = 25;
+	/** Integers to store the height of the paddles */
 	private static final int PADDLE_HEIGHT = 100;
+	/** Declare thread to be used by this game */
 	private Thread gameThread;
+	/** Declare new image to store the */
 	private Image image;
 	private Graphics graphics;
 	private Random rand;
@@ -40,9 +55,9 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void createBall() {
-//		rand = new Random();
-		ball = new Ball((GAME_WIDTH / 2) - (BALL_DIAMETER / 2), (GAME_HEIGHT / 2) - (BALL_DIAMETER / 2), BALL_DIAMETER,
-				BALL_DIAMETER);
+		rand = new Random();
+		ball = new Ball((GAME_WIDTH / 2) - (BALL_DIAMETER / 2), rand.nextInt(GAME_HEIGHT - BALL_DIAMETER),
+				BALL_DIAMETER, BALL_DIAMETER);
 	}
 
 	public void createPaddle() {
@@ -62,6 +77,7 @@ public class GamePanel extends JPanel implements Runnable {
 		user.draw(g);
 		comp.draw(g);
 		ball.draw(g);
+		score.draw(g);
 	}
 
 	public void move() {
@@ -91,11 +107,11 @@ public class GamePanel extends JPanel implements Runnable {
 			} else {
 				ball.setyVelocity(ball.getyVelocity() - 1);
 			}
-			
+
 			ball.setXDir(ball.getxVelocity());
 			ball.setYDir(ball.getyVelocity());
 		}
-		
+
 		// bounces ball of computer paddle
 		if (ball.intersects(comp)) {
 			ball.setxVelocity(Math.abs(ball.getxVelocity()));
@@ -106,7 +122,7 @@ public class GamePanel extends JPanel implements Runnable {
 			} else {
 				ball.setyVelocity(ball.getyVelocity() - 1);
 			}
-			
+
 			ball.setXDir(-ball.getxVelocity());
 			ball.setYDir(ball.getyVelocity());
 		}
@@ -126,6 +142,21 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if (comp.y >= (GAME_HEIGHT - PADDLE_HEIGHT)) {
 			comp.y = GAME_HEIGHT - PADDLE_HEIGHT;
+		}
+
+		// give a player 1 point and creates new paddles & ball
+		if (ball.x <= 0) {
+			score.setComp(score.getComp() + 1);
+			createPaddle();
+			createBall();
+			System.out.println("Computer Score: " + score.getComp());
+		}
+
+		if (ball.x >= GAME_WIDTH - BALL_DIAMETER) {
+			score.setUser(score.getUser() + 1);
+			createPaddle();
+			createBall();
+			System.out.println("User Score: " + score.getUser());
 		}
 	}
 
