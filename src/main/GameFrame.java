@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 public class GameFrame extends JFrame {
 	/** New GamePanel instance */
 	private GamePanel panel;
-	
+
 	/**
 	 * Constructor that initializes the JPanel and defines the JFrame
 	 */
@@ -26,6 +26,7 @@ public class GameFrame extends JFrame {
 		this.pack();
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);
+		// Color is dark green
 		this.setBackground(new Color(108, 147, 92));
 	}
 }
