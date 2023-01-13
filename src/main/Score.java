@@ -23,18 +23,20 @@ public class Score extends Rectangle {
 	private int paddle2;
 
 	/**
-	 * Constructor which sets the width and height of the GamePanel. 
-	 * @param width - Width of the JPanel
+	 * Constructor which sets the width and height of the GamePanel.
+	 * 
+	 * @param width  - Width of the JPanel
 	 * @param height - Height of the JPanel
 	 */
 	public Score(int width, int height) {
 		Score.GAME_WIDTH = width;
 		Score.GAME_HEIGHT = height;
 	}
-	
+
 	/**
-	 * Draws the score text. 
-	 * @param g - Used to put the text onto the JPanel 
+	 * Draws the score text.
+	 * 
+	 * @param g - Used to put the text onto the JPanel
 	 */
 	public void draw(Graphics g) {
 		g.setColor(Color.WHITE);
@@ -45,9 +47,10 @@ public class Score extends Rectangle {
 		g.drawString(String.valueOf(paddle1 / 10) + String.valueOf(paddle1 % 10), (GAME_WIDTH / 2) - 85, 50);
 		g.drawString(String.valueOf(paddle2 / 10) + String.valueOf(paddle2 % 10), (GAME_WIDTH / 2) + 20, 50);
 	}
-	
+
 	/**
-	 * Gets the score for the paddle on the left. 
+	 * Gets the score for the paddle on the left.
+	 * 
 	 * @return - Integer value of paddle1's score
 	 */
 	public int getPaddle1() {
@@ -55,23 +58,26 @@ public class Score extends Rectangle {
 	}
 
 	/**
-	 * Sets the score for the paddle on the left. 
+	 * Sets the score for the paddle on the left.
+	 * 
 	 * @param paddle1 - Value of paddle1's score
 	 */
 	public void setPaddle1(int paddle1) {
 		this.paddle1 = paddle1;
 	}
-	
+
 	/**
-	 * Gets the score for the paddle on the right. 
+	 * Gets the score for the paddle on the right.
+	 * 
 	 * @return - Integer value of paddle2's score
 	 */
 	public int getPaddle2() {
 		return paddle2;
 	}
-	
+
 	/**
-	 * Sets the score for the paddle on the right. 
+	 * Sets the score for the paddle on the right.
+	 * 
 	 * @param paddle2 - Value of paddle2's score
 	 */
 	public void setPaddle2(int paddle2) {

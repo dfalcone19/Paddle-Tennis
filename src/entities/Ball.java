@@ -22,7 +22,7 @@ public class Ball extends Rectangle {
 	/** Tracks the vertical velocity of the ball. */
 	private int yVelocity;
 	/** Sets the initial speed of the ball. */
-	int initialSpeed = 1;
+	int initialSpeed = 5;
 
 	/**
 	 * Constructor for the ball.

@@ -124,7 +124,7 @@ public class GamePanel extends JPanel implements Runnable {
 	 */
 	public void detectCollision() {
 
-		// bounce ball of top and bottom of window and then reverse its Y direction
+		// if the ball hits the top or the bottom of the screen reverse its velocity
 		if (ball.y <= 0) {
 			ball.setYDir(-ball.getyVelocity());
 		}
@@ -135,33 +135,38 @@ public class GamePanel extends JPanel implements Runnable {
 
 		// bounces ball off of paddle1
 		if (ball.intersects(paddle1)) {
-			// initial value is 0
+			// reverse the ball's velocity
 			ball.setxVelocity(Math.abs(ball.getxVelocity()));
-
+			// increase velocity after
 			ball.setxVelocity(ball.getxVelocity() + 1);
 
-			// increase the ball velocity by 1 if it has hit a paddle
+			// increment the vertical velocity
 			if (ball.getyVelocity() > 0) {
 				ball.setyVelocity(ball.getyVelocity() + 1);
 			} else {
 				ball.setyVelocity(ball.getyVelocity() - 1);
 			}
 
+			// assign x and y directions the new values
 			ball.setXDir(ball.getxVelocity());
 			ball.setYDir(ball.getyVelocity());
 		}
 
-		// bounces ball of paddle2uter paddle
+		// bounces ball of paddle2
 		if (ball.intersects(paddle2)) {
+			// reverse the ball's velocity
 			ball.setxVelocity(Math.abs(ball.getxVelocity()));
+			// increase the velocity
 			ball.setxVelocity(ball.getxVelocity() + 1);
 
+			// increment the vertical velocity
 			if (ball.getyVelocity() > 0) {
 				ball.setyVelocity(ball.getyVelocity() + 1);
 			} else {
 				ball.setyVelocity(ball.getyVelocity() - 1);
 			}
 
+			// assign x and y directions the new values
 			ball.setXDir(-ball.getxVelocity());
 			ball.setYDir(ball.getyVelocity());
 		}
@@ -183,7 +188,10 @@ public class GamePanel extends JPanel implements Runnable {
 			paddle2.y = GAME_HEIGHT - PADDLE_HEIGHT;
 		}
 
-		// give a player 1 point and creates new paddles & ball
+		/*
+		 * add one point to the paddle on the right if the ball passes the left edge of
+		 * the screen and vice versa
+		 */
 		if (ball.x <= 0) {
 			score.setPaddle2(score.getPaddle2() + 1);
 			createPaddle();
@@ -201,29 +209,35 @@ public class GamePanel extends JPanel implements Runnable {
 	 * Method from runnable that executes the game loop.
 	 */
 	public void run() {
-		// game loop
-		double timePerFrame = 1000000000.0 / 120;
-		long previousTime = System.nanoTime();
+		// set how long each frame should last in nano seconds (16,666,666.6667 nano
+		// seconds * 60 = 1 frame)
+		double timePerFrame = 1000000000.0 / 60;
+		// tracks how long ago the last FPS check was for the actual game loop
+		long lastFrame = System.nanoTime();
+		// tracks the current time
+		long now = System.nanoTime();
+		// tracks how long ago the last check was for the FPS counter
+		long lastCheck = System.currentTimeMillis();
 		int frames = 0;
-		double deltaF = 0;
-		long timeSinceLastCheck = System.currentTimeMillis();
 
 		while (true) {
-			long currentTime = System.nanoTime();
-
-			deltaF += (currentTime - previousTime) / timePerFrame;
-			previousTime = currentTime;
-
-			if (deltaF >= 1) {
+			// reset current time
+			now = System.nanoTime();
+			// if the frame has been displayed for the desired number of nano seconds...
+			if (now - lastFrame >= timePerFrame) {
 				move();
 				detectCollision();
+				// redraw the scene
 				this.repaint();
-				deltaF--;
+				lastFrame = now;
 				frames++;
 			}
 
-			if (System.currentTimeMillis() - timeSinceLastCheck >= 1000) {
-				timeSinceLastCheck = System.currentTimeMillis();
+			// if it has been one second since we last checked...
+			if (System.currentTimeMillis() - lastCheck > 1000) {
+				// reset last check
+				lastCheck = System.currentTimeMillis();
+				// print and reset how many frames there have been
 				System.out.println("FPS: " + frames);
 				frames = 0;
 			}
@@ -231,10 +245,20 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 	}
 
+	/**
+	 * Gets the paddle on the left.
+	 * 
+	 * @return - Paddle on the left
+	 */
 	public Paddle getPaddle1() {
 		return paddle1;
 	}
 
+	/**
+	 * Gets the paddle on the right.
+	 * 
+	 * @return - Paddle on the right
+	 */
 	public Paddle getPaddle2() {
 		return paddle2;
 	}
